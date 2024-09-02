@@ -4,6 +4,7 @@ import commonStyles from "../commonStyles";
 import todayImage from '../../assets/imgs/today.jpg';
 import 'moment/locale/pt-br';
 import moment from 'moment';
+import Task from "../components/Task";
 
 export default class TaskList extends Component {
     render() {
@@ -22,9 +23,11 @@ export default class TaskList extends Component {
                 </ImageBackground>
 
                 <View style={styles.taskList}>
-                    <Text>Tarefa #01</Text>
-                    <Text>Tarefa #02</Text>
-                    <Text>Tarefa #03</Text>
+                    <Task style={styles.task} desc="Comprar livro" estimateAt={new Date()} doneAt={new Date()} />
+                    <Task desc="Ler Livro" estimateAt={new Date()} doneAt={null} />
+                    
+                    
+                   
                     
                 </View>
             </View>
@@ -61,5 +64,9 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginBottom: 30
         
+    },
+    task: {
+        flex: 1,
+        color: 'black'
     }
 });
