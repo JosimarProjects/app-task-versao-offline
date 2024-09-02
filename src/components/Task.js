@@ -1,8 +1,15 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
+import 'moment/locale/pt-br';
+
+import commonStyles from "../commonStyles";
 
 export default props => {
+    const doneOrNotStyle = props.doneAt != null ? { textDecorationLine: 'line-through' } : {};
+    const date = props.doneAt != null ? props.doneAt : props.estimateAt;
+    const formattedDate = moment(props.date).locale('pt-br').format('ddd, D [de] MMMM');
     return (
         <View style={styles.container}>
             <View style={styles.checkContainer}>
@@ -10,9 +17,8 @@ export default props => {
             </View>
             <View>
                 <Icon name="rocket" size={30} color="#900" />
-
-                <Text style={styles.desc}>{props.desc}</Text>
-                <Text style={styles.date}>{props.estimateAt.toString()}</Text>
+                <Text style={[styles.desc, doneOrNotStyle]}>{props.desc}</Text>
+                <Text style={styles.date}>{formattedDate}</Text>
             </View>
         </View>
     );
@@ -50,11 +56,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#000000',
     },
-    date: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#000000',
-    },
+ 
     pending: {
         width: 25,
         height: 25,
@@ -69,5 +71,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#4d7031',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    desc: {
+        fontFamily: commonStyles.fontFamily,
+        color: commonStyles.colors.mainText,
+        fontSize: 15,
+    },
+    date: {
+        fontFamily: commonStyles.fontFamily,
+        color: commonStyles.colors.subText,
+        fontSize: 12,
     }
 });

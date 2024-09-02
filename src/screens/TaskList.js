@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, ImageBackground, FlatList } from "react-native";
 import commonStyles from "../commonStyles";
 import todayImage from '../../assets/imgs/today.jpg';
 import 'moment/locale/pt-br';
@@ -7,6 +7,23 @@ import moment from 'moment';
 import Task from "../components/Task";
 
 export default class TaskList extends Component {
+    state = {
+        tasks: [
+            {
+                id: Math.random(),
+                desc: 'Comprar livro',
+                estimateAt: new Date(),
+                doneAt: new Date()
+            },
+            {
+                id: Math.random(),
+                desc: 'Ler Livro',
+                estimateAt: new Date(),
+                doneAt: null
+            },
+
+        ]
+    }
     render() {
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM');
 
@@ -23,12 +40,18 @@ export default class TaskList extends Component {
                 </ImageBackground>
 
                 <View style={styles.taskList}>
-                    <Task style={styles.task} desc="Comprar livro" estimateAt={new Date()} doneAt={new Date()} />
-                    <Task desc="Ler Livro" estimateAt={new Date()} doneAt={null} />
-                    
-                    
-                   
-                    
+
+                    <FlatList
+                        data={this.state.tasks}
+                        keyExtractor={item => `${item.id}`}
+                        renderItem={(obj) => <Task {...obj.item} />}
+
+                    >
+
+                    </FlatList>
+
+
+
                 </View>
             </View>
         );
@@ -63,7 +86,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginLeft: 20,
         marginBottom: 30
-        
+
     },
     task: {
         flex: 1,
