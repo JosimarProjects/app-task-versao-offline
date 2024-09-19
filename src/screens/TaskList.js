@@ -7,31 +7,28 @@ import 'moment/locale/pt-br';
 import moment from 'moment';
 import Task from "../components/Task";
 import AddTask from "./AddTask";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const initialState = {
+    showDoneTasks: true,
+    showAddTask: false,
+    visibleTasks: [],
+    tasks: []
+}
 
 export default class TaskList extends Component {
     state = {
-        showDoneTasks: true,
-        showAddTask: false,
-        visibleTasks: [],
-        tasks: [
-            {
-                id: Math.random(),
-                desc: 'Comprar livro',
-                estimateAt: new Date(),
-                doneAt: new Date()
-            },
-            {
-                id: Math.random(),
-                desc: 'Ler Livro',
-                estimateAt: new Date(),
-                doneAt: null
-            },
-
-        ]
+        ...initialState
     }
 
-    componentDidMount() {
-        this.filterTasks();
+    componentDidMount= async () => {
+        const stateString = await AsyncStorage.getItem('tasksState');
+        const state = JSON.parse(stateString) || initialState;
+        this.setState(state, this.filterTasks);
+    }
+
+    componentDidUpdate = async () => {
+        await AsyncStorage.setItem('tasksState', JSON.stringify(this.state));
     }
 
     toogleFilter = () => {
@@ -50,6 +47,7 @@ export default class TaskList extends Component {
         }
 
         this.setState({ visibleTasks: visibleTasks });
+        AsyncStorage.setItem('tasksState',JSON.stringify(this.state.tasks));
 
     }
 
