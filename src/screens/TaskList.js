@@ -13,9 +13,9 @@ const initialState = {
     showDoneTasks: true,
     showAddTask: false,
     visibleTasks: [],
-    tasks: []
+    tasks:  []
 }
-
+ 
 export default class TaskList extends Component {
     state = {
         ...initialState
