@@ -13,7 +13,8 @@ export default class Auth extends Component {
     }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
+    
   background: {
     flex: 1,
     width: '100%',
