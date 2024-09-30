@@ -4,14 +4,13 @@
 import 'react-native-gesture-handler';  // Import necessário para gestos
 import { AppRegistry } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';  // Importação do GestureHandlerRootView
-import TaskList from './src/screens/TaskList';
-import Auth from './src/screens/Auth';
+import Navigator from './src/Navigator';  // Certifique-se de importar seu componente Navigator
 import { name as appName } from './app.json';
 
 const App = () => (
   <GestureHandlerRootView style={{ flex: 1 }}>
-    <TaskList />
+    <Navigator />  
   </GestureHandlerRootView>
 );
 
-AppRegistry.registerComponent(appName, () => Auth);
+AppRegistry.registerComponent(appName, () => App); // Registra o App que agora engloba o Navigator

@@ -15,13 +15,13 @@ const initialState = {
     visibleTasks: [],
     tasks:  []
 }
- 
+
 export default class TaskList extends Component {
     state = {
         ...initialState
     }
 
-    componentDidMount= async () => {
+    componentDidMount = async () => {
         const stateString = await AsyncStorage.getItem('tasksState');
         const state = JSON.parse(stateString) || initialState;
         this.setState(state, this.filterTasks);
@@ -31,24 +31,21 @@ export default class TaskList extends Component {
         await AsyncStorage.setItem('tasksState', JSON.stringify(this.state));
     }
 
-    toogleFilter = () => {
-        this.setState({ showDoneTasks: !this.state.showDoneTasks }, this.filterTasks );
-        
+    toggleFilter = () => {
+        this.setState({ showDoneTasks: !this.state.showDoneTasks }, this.filterTasks);
     }
 
     filterTasks = () => {
         let visibleTasks = null;
         if (this.state.showDoneTasks) {
             visibleTasks = [...this.state.tasks];
-        }else {
+        } else {
             const pending = task => task.doneAt == null;
-            visibleTasks = this.state.tasks.filter(pending)        
-            
+            visibleTasks = this.state.tasks.filter(pending);
         }
 
-        this.setState({ visibleTasks: visibleTasks });
-        AsyncStorage.setItem('tasksState',JSON.stringify(this.state.tasks));
-
+        this.setState({ visibleTasks });
+        AsyncStorage.setItem('tasksState', JSON.stringify(this.state.tasks));
     }
 
     toggleTask = taskId => {
@@ -57,55 +54,54 @@ export default class TaskList extends Component {
             if (task.id === taskId) {
                 task.doneAt = task.doneAt ? null : new Date();
             }
-        })
+        });
         this.setState({ tasks }, this.filterTasks);
     }
 
-    AddTask = newTask => {
+    addTask = newTask => {
         if (!newTask.desc || !newTask.desc.trim()) {
-            Alert.alert('Dados Inválidos', 'Descrição não informada!');
+            Alert.alert('Dados Inválidos', 'Descrição não informada!');
             return;
-            
-        }            
-        
+        }
+
         const tasks = [...this.state.tasks];
         tasks.push({
             id: Math.random(),
             desc: newTask.desc,
             estimateAt: newTask.date,
             doneAt: null
-        })
+        });
 
         this.setState({ tasks, showAddTask: false }, this.filterTasks);
-       
     }
+
     deleteTask = taskId => {
         const tasks = this.state.tasks.filter(task => task.id !== taskId);
-        this.setState({ tasks }, this.filterTasks)
-        
+        this.setState({ tasks }, this.filterTasks);
     }
+
     render() {
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM');
 
         return (
             <View style={styles.container}>
                 <AddTask 
-                isVisible={this.state.showAddTask}
-                onCancel={() => this.setState({ showAddTask: false })
-            }
-            onSave={this.AddTask}
-                 />
+                    isVisible={this.state.showAddTask}
+                    onCancel={() => this.setState({ showAddTask: false })}
+                    onSave={this.addTask}
+                />
                 <ImageBackground
                     source={todayImage}
                     style={styles.background}
                 >
                     <View style={styles.iconBar}>
-                        <TouchableOpacity onPress={this.toogleFilter}>
-                            <Icon name={this.state.showDoneTasks ? 'eye' : 'eye-slash'} size={27} color={commonStyles.colors.secondary}
-                            
+                        <TouchableOpacity onPress={this.toggleFilter}>
+                            <Icon 
+                                name={this.state.showDoneTasks ? 'eye' : 'eye-slash'} 
+                                size={27} 
+                                color={commonStyles.colors.secondary}
                             />
                         </TouchableOpacity>
-                        
                     </View>
                     <View style={styles.titleBar}>
                         <Text style={styles.title}>Hoje</Text>
@@ -114,18 +110,25 @@ export default class TaskList extends Component {
                 </ImageBackground>
 
                 <View style={styles.taskList}>
-
                     <FlatList
                         data={this.state.visibleTasks}
                         keyExtractor={item => `${item.id}`}
-                        renderItem={(obj) => <Task {...obj.item}
-                        onToggleTask={this.toggleTask} onDelete={this.deleteTask} />}
-                    >
-                    </FlatList>
+                        renderItem={({ item }) => (
+                            <Task 
+                                {...item}
+                                onToggleTask={this.toggleTask} 
+                                onDelete={this.deleteTask} 
+                            />
+                        )}
+                    />
                 </View>
-                <TouchableOpacity style={styles.addButton }  onPress={() => this.setState({ showAddTask: true })} activeOpacity={0.7}>
-                    <Icon name="plus" size={20} color={commonStyles.colors.secondary} style={styles.icon} />
-
+                
+                <TouchableOpacity 
+                    style={styles.addButton}  
+                    onPress={() => this.setState({ showAddTask: true })} 
+                    activeOpacity={0.7}
+                >
+                    <Icon name="plus" size={20} color={commonStyles.colors.secondary} />
                 </TouchableOpacity>
             </View>
         );
@@ -135,7 +138,6 @@ export default class TaskList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
     },
     background: {
         flex: 3
@@ -160,11 +162,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginLeft: 20,
         marginBottom: 30
-
-    },
-    task: {
-        flex: 1,
-        color: 'black'
     },
     iconBar: {
         flexDirection: 'row',

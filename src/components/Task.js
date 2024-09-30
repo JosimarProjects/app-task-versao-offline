@@ -6,11 +6,10 @@ import 'moment/locale/pt-br';
 import commonStyles from "../commonStyles";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
-
 export default props => {
     const doneOrNotStyle = props.doneAt != null ? { textDecorationLine: 'line-through' } : {};
     const date = props.doneAt != null ? props.doneAt : props.estimateAt;
-    const formattedDate = moment(props.date).locale('pt-br').format('ddd, D [de] MMMM');
+    const formattedDate = moment(date).locale('pt-br').format('ddd, D [de] MMMM');
 
     const getRightContent = () => {
         return (
@@ -22,40 +21,32 @@ export default props => {
 
     const getLeftContent = () => {
         return (
-            <View style={styles.left} onPress={() => props.onDelete(props.id)}>
+            <View style={styles.left}>
                 <Icon name='trash' size={20} color='#FFF' style={styles.excludeText} />
                 <Text style={styles.excludeText}>Excluir</Text>
             </View>
         );
     }
 
-
     return (
         <Swipeable
-        onSwipeableLeftOpen={() => props.onDelete && props.onDelete(props.id)}
-        renderRightActions={getRightContent}
-        renderLeftActions={getLeftContent}
+            onSwipeableLeftOpen={() => props.onDelete && props.onDelete(props.id)}
+            renderRightActions={getRightContent}
+            renderLeftActions={getLeftContent}
         >
             <View style={styles.container}>
-                <TouchableWithoutFeedback
-                    onPress={() => props.onToggleTask(props.id)}
-                >
+                <TouchableWithoutFeedback onPress={() => props.onToggleTask(props.id)}>
                     <View style={styles.checkContainer}>
                         {getCheckView(props.doneAt)}
                     </View>
-
                 </TouchableWithoutFeedback>
 
-
-                <View>
-                    <Icon name="rocket" size={30} color="#900" />
+                <View style={{ flex: 1 }}>
                     <Text style={[styles.desc, doneOrNotStyle]}>{props.desc}</Text>
                     <Text style={styles.date}>{formattedDate}</Text>
                 </View>
             </View>
-
         </Swipeable>
-
     );
 }
 
@@ -87,12 +78,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
-    desc: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#000000',
-    },
-
     pending: {
         width: 25,
         height: 25,
@@ -134,11 +119,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         paddingHorizontal: 20,
         paddingVertical: 10
-    },
-    excludeIcon: {
-        marginLeft: 10,
-        color: '#FFF',
-        fontSize: 20
     },
     excludeText: {
         fontFamily: commonStyles.fontFamily,
