@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { ImageBackground, Text, StyleSheet, View, TextInput, TouchableOpacity, Platform, alert, Alert } from "react-native";
 import backgroundImage from '../../assets/imgs/login.jpg';  // Verifique o caminho da imagem
 import commonStyles from "../commonStyles";  // Certifique-se que o caminho esteja correto
+import AuthInput from "../components/AuthInput";
+
 
 export default class Auth extends Component {
   state = {
@@ -28,17 +30,17 @@ export default class Auth extends Component {
         <View style={styles.formContainer}>
           <Text style={styles.subtitle}>{this.state.stageNew ? 'Crie sua conta' : 'Entre com a sua conta'}</Text>
           {
-            this.state.stageNew && <TextInput placeholder="Nome" value={this.state.name} style={styles.input}
+            this.state.stageNew && <AuthInput icon='user' placeholder="Nome" value={this.state.name} style={styles.input}
               onChangeText={name => this.setState({ name })} />
           }
-          <TextInput placeholder="E-mail" value={this.state.email} style={styles.input}
+          <AuthInput icon='at' placeholder="E-mail" value={this.state.email} style={styles.input}
             onChangeText={email => this.setState({ email })} />
 
-          <TextInput placeholder="Senha" value={this.state.password} style={styles.input}
+          <AuthInput icon='lock' placeholder="Senha" value={this.state.password} style={styles.input}
             onChangeText={password => this.setState({ password })} secureTextEntry={true} />
 
           {
-            this.state.stageNew && <TextInput
+            this.state.stageNew && <AuthInput icon='asterisk'
               placeholder="Confirmação de Senha"
               value={this.state.confirmPassword}
               style={styles.input}
@@ -92,7 +94,6 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#080',
     height: 40,
-    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
