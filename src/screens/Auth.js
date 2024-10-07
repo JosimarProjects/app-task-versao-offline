@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ImageBackground, Text, StyleSheet, View, TextInput, TouchableOpacity, Platform, alert, Alert } from "react-native";
 import backgroundImage from '../../assets/imgs/login.jpg';  // Verifique o caminho da imagem
 import commonStyles from "../commonStyles";  // Certifique-se que o caminho esteja correto
-import AuthInput from "../components/AuthInput";
+import AuthInput from ".\./components/AuthInput";
 import { server, showError, showSuccess } from '../common'
 import axios from 'axios';
 
