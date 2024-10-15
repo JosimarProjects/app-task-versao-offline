@@ -67,15 +67,15 @@ export default class AddTask extends Component {
                 </TouchableWithoutFeedback>
 
                 <View style={styles.container}>
-                    <Text style={styles.header}>Nova Tarefa</Text>
+                    <Text style={[styles.header, {backgroundColor: this.props.color}]}>Nova Tarefa</Text>
                     <TextInput style={styles.input} contextMenuHidden={true} placeholder="Informe a descrição" value={this.state.desc} onChangeText={desc => this.setState({ desc })}></TextInput>
                     {this.getDatePicker()}
                     <View style={styles.buttons}>
                         <TouchableOpacity onPress={this.props.onCancel}>
-                            <Text style={styles.button}>Cancelar</Text>
+                            <Text style={[styles.button, {color: this.props.color}]}>Cancelar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.save}>
-                            <Text style={styles.button}>Salvar</Text>
+                            <Text style={[styles.button, {color: this.props.color}]}>Salvar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
